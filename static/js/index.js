@@ -1,13 +1,3 @@
-var HOST = "http://localhost:5000";
-var APP = "";
-var URL_PRE = HOST + APP;
-var URLS = {assets:URL_PRE + "/assets",
-			validate_asset_tag:URL_PRE + "/validator/assets"};
-//var _assets;
-var PER_PAGE = 40;
-//var _pagination;
-//var _total_page;
-
 function init_pagination(page, total) {
 	$(pagination_div).pagination({
         //items: 100,
@@ -29,10 +19,8 @@ function getPage(n, do_init_pagination) {
 	var url =  URLS.assets + jsonToQueryString(para) + "&like=" + vue.like + "&logic=" + vue.logic;
 	$.get(url)
 		.done(function(data) {
-			//console.log(data);
 			var response = JSON.parse(data);
 			vue.assets = response.assets;
-			//this.vue._data.pages = response.pages;
 			if (do_init_pagination) {
 				init_pagination(1, response.pages);
 			}

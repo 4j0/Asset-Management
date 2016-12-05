@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
+from db_conf import DB_CONFIG
 #import pdb
 
 db = SQLAlchemy()
-sql_engine = create_engine('mysql://root:fspqH3F5@localhost/nccc')
+sql_engine = create_engine('mysql://%s:%s@%s/%s' % (\
+        DB_CONFIG['username'],\
+        DB_CONFIG['password'],\
+        DB_CONFIG['server'],\
+        DB_CONFIG['db'])\
+        )
 db.Model.metadata.reflect(sql_engine)
 
 #def modelToDict(model):
