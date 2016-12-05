@@ -68,6 +68,7 @@ def login():
     abort(401)
 
 @app.route("/validator/assets", methods=['GET'])
+@login_required
 def validate_asset():
     _asset_tag = request.args['asset_tag']
     if _asset_tag and Asset.query.filter_by(asset_tag = _asset_tag).scalar() is not None:
@@ -75,7 +76,7 @@ def validate_asset():
     return make_response('true', 200, {'Content-Type': 'application/json'})
 
 @app.route("/assets", methods=['GET'])
-#@login_required
+@login_required
 def get_assets():
     args = request.args.to_dict()
     criteria = { k:v for (k,v) in args.items() if k in Asset.__table__.columns.keys() }
@@ -102,6 +103,7 @@ def get_assets():
     #assets = json.dumps(pagination.items, default=modelToDict, ensure_ascii=False)
 
 @app.route("/assets", methods=['POST'])
+@login_required
 def add_asset():
     _asset_tag = request.json.get('asset_tag')
     if Asset.query.filter_by(asset_tag = _asset_tag).scalar() is not None:
@@ -112,12 +114,14 @@ def add_asset():
     return '', 201
 
 @app.route("/assets/<string:_asset_tag>", methods=['PUT'])
+@login_required
 def update_asset(_asset_tag):
     Asset.query.filter(Asset.asset_tag == _asset_tag).update(request.json)
     db.session.commit()
     return "", 201
 
 @app.route("/assets/<string:_asset_tag>", methods=['DELETE'])
+@login_required
 def del_asset(_asset_tag):
     asset = Asset.query.filter_by(asset_tag = _asset_tag).first()
     db.session.delete(asset)
