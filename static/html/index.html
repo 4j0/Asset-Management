@@ -5,14 +5,14 @@
 		<title>固定资产管理</title>
 		<link rel="stylesheet" type="text/css" href="../css/index.css">
 		<link rel="stylesheet" type="text/css" href="../css/simplePagination.css">
-		<link rel="stylesheet" type="text/css" href="../css/pagination.css">
-		<script src="../js/vue.js"></script>
-		<script src="../js/jquery-3.1.1.js"></script>
-		<script src="../js/layer/layer.js"></script>
+		<script src="../js/lib/vue.js"></script>
+		<script src="../js/lib/jquery-3.1.1.js"></script>
+		<script src="../js/lib/layer.js"></script>
+		<script src="../js/lib/jquery.simplePagination.js"></script>
+		<script src="../js/lib/jquery.validate.js"></script>
+		<script src="../js/lib/loadingoverlay.js"></script>
 		<script src="../js/functions.js"></script>
-		<script src="../js/jquery.simplePagination.js"></script>
-		<script src="../js/jquery.validate.js"></script>
-		<script src="../js/loadingoverlay.js"></script>
+		<script src="../js/login.js"></script>
 		<script src="../js/index.js"></script>
 	</head>
 	<body>
@@ -77,7 +77,6 @@
 				</select>
 				<span>查询逻辑</span>
 				<button id="add_button" v-on:click="add_asset">新增</button>
-				<!--<div id="add_button_div" v-on:click="add_asset"><img class="main_buttons" src="../img/add.png"><button id="add_button">新增</button></div>-->
 			</div>
 			<div id="result_panel">
 				<table id="result_table">

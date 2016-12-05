@@ -1,8 +1,8 @@
 var URL = "http://localhost:5000/";
 
 function login() {
-	var userName = $('user').value;
-	var passwd = $('passwd').value;
+	var userName = _$('user').value;
+	var passwd = _$('passwd').value;
 	if (userName && passwd) {
 		var user = { 'name' : userName, 'passwd' : passwd };
 		console.log(JSON.stringify(user));
@@ -10,7 +10,7 @@ function login() {
 			window.location.href = "index.html";
 		}, function() {
 			alert("用户名，密码错误！");
-			$('passwd').value = "";
+			_$('passwd').value = "";
 		});
 	}
 }
