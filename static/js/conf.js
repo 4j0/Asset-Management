@@ -1,5 +1,5 @@
-var HOST = "http://localhost:5000";
-var APP = "";
+var HOST = "http://4j0.gicp.net:8888";
+var APP = "/am";
 var URL_PRE = HOST + APP;
 var URLS = {assets : URL_PRE + "/assets",
 			validate_asset_tag : URL_PRE + "/validator/assets",
