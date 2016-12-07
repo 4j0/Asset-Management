@@ -220,9 +220,9 @@ jQuery.validator.addMethod("mac", function(value, element) {
 }, "Please input the correct MAC Address AA-BB-CC-DD-EE-FF");
 
 $(document).ajaxStart(function(){
-	//$.LoadingOverlay("show");
+	$.LoadingOverlay("show", {zIndex:3});
 });
 
 $(document).ajaxStop(function(){
-	//$.LoadingOverlay("hide");
+	$.LoadingOverlay("hide");
 });

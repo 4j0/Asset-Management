@@ -120,14 +120,14 @@
 			<div id="edit_panel" v-show="show_edit_panel"> 
 				<form class="Form" id="form" method="" action="">
 					<div class="each_field"><label for="e_asset_tag">asset_tag</label><input id="e_asset_tag" name="asset_tag" class="asset_tag" v-model="submit_asset.asset_tag"></div>
-					<div class="each_field"><label for="asset_state">asset_state</label><input id="e_asset_state" name="asset_state" class="asset_state" v-model="submit_asset.asset_state"></div>
+					<div class="each_field"><label for="asset_state">asset_state</label><input id="e_asset_state" name="asset_state" class="asset_state" v-model="submit_asset.asset_state" list="datalist_asset_state"></div>
 					<div class="each_field"><label for="e_sn">sn</label><input id="e_sn" name="sn" class="sn" v-model="submit_asset.sn"></div>
 					<div class="each_field"><label for="e_user">user</label><input id="e_user" name="user" class="user" v-model="submit_asset.user"></div>
-					<div class="each_field"><label for="e_location">location</label><input id="e_location" name="location" class="location" v-model="submit_asset.location"></div>
+					<div class="each_field"><label for="e_location">location</label><input id="e_location" name="location" class="location" v-model="submit_asset.location" list="datalist_location"></div>
 					<div class="each_field"><label for="e_specific_location">specific_location</label><input id="e_specific_location" name="specific_location" class="specific_location" v-model="submit_asset.specific_location"></div>
-					<div class="each_field"><label for="e_type">type</label><input id="e_type" name="type" class="type" v-model="submit_asset.type"></div>
-					<div class="each_field"><label for="e_model">model</label><input id="e_model" name="model" class="model" v-model="submit_asset.model"></div>
-					<div class="each_field"><label for="e_os">os</label><input id="e_os" name="os" class="os" v-model="submit_asset.os"></div>
+					<div class="each_field"><label for="e_type">type</label><input id="e_type" name="type" class="type" v-model="submit_asset.type" list="datalist_type"></div>
+					<div class="each_field"><label for="e_model">model</label><input id="e_model" name="model" class="model" v-model="submit_asset.model" list="datalist_model"></div>
+					<div class="each_field"><label for="e_os">os</label><input id="e_os" name="os" class="os" v-model="submit_asset.os" list="datalist_os"></div>
 					<div class="each_field"><label for="e_mac_wireless">mac_wireless</label><input id="e_mac_wireless" name="mac_wireless" class="mac_wireless" v-model="submit_asset.mac_wireless"></div>
 					<div class="each_field"><label for="e_mac_wired">mac_wired</label><input id="e_mac_wired" name="mac_wired" class="mac_wired" v-model="submit_asset.mac_wired"></div>
 					<div class="each_field"><label for="e_remark">remark</label><input id="e_remark" name="remark" class="remark" v-model="submit_asset.remark"></div>
@@ -138,6 +138,36 @@
 				</div>
 			</div>
 			<div id="modal-mask" v-show="show_modal_mask"></div>
+			<datalist id="datalist_asset_state">
+				<option value="已报废">
+			</datalist>
+			<datalist id="datalist_location">
+				<option value="海徐路">
+			</datalist>
+			<datalist id="datalist_type">
+				<option value="笔记本">
+				<option value="台式机">
+			</datalist>
+			<datalist id="datalist_model">
+				<option value="DELL Optiplex 390">
+				<option value="DELL Latitude">
+				<option value="DELL Latitude 3450">
+				<option value="DELL Latitude 3460">
+				<option value="Microsoft Surface Pro 4">
+				<option value="Mac Book Pro">
+				<option value="Win 10 64">
+			</datalist>
+			<datalist id="datalist_os">
+				<option value="Win 7 32">
+				<option value="Win 7 64">
+				<option value="Win 10 32">
+				<option value="Win 10 64">
+				<option value="OS X">
+				<option value="OS X 10.9">
+				<option value="OS X 10.10">
+				<option value="OS X 10.11">
+				<option value="OS X 10.12">
+			</datalist>
 		</div>
 	</body>
 </html>
