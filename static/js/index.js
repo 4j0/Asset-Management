@@ -26,7 +26,9 @@ function getPage(n, do_init_pagination) {
 			}
 		})
 	.fail(function(jqXHR, textStatus, errorThrown) {
-		//
+		if (jqXHR.status === 401) {
+			window.location.href = "login.html";
+		}
 	});
 }
 
@@ -104,6 +106,11 @@ $(document).ready(function(){
 							.done(function( data, textStatus, jqXHR ) {
 								var asset_index = $.inArray(vue.clicked_asset, vue.assets);
 								vue.assets.splice(asset_index, 1);
+							})
+							.fail(function(jqXHR, textStatus, errorThrown) {
+								if (jqXHR.status === 401) {
+									window.location.href = "login.html";
+								}
 							});
 					layer.close(index);
 				}, function(index){
@@ -128,7 +135,9 @@ $(document).ready(function(){
 									vue.assets.push(vue.submit_asset);
 								})
 							.fail(function(jqXHR, textStatus, errorThrown) {
-								//
+								if (jqXHR.status === 401) {
+									window.location.href = "login.html";
+								}
 							});
 						}
 					//update asset
@@ -145,7 +154,9 @@ $(document).ready(function(){
 									vue.close_edit_panel();
 								})
 							.fail(function(jqXHR, textStatus, errorThrown) {
-								//
+								if (jqXHR.status === 401) {
+									window.location.href = "login.html";
+								}
 							});
 						}
 					}
