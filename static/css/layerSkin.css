@@ -1,0 +1,9 @@
+body .error .layui-layer-btn .layui-layer-btn0 {
+	background : #D9534F;
+	border-color : #D9534F;
+}
+
+body .error .layui-layer-title {
+	background:#D9534F;
+	color:#FFFFFF;
+}

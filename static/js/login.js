@@ -1,19 +1,26 @@
 function login() {
 	var userName = $('#user').val();
 	var passwd = $('#passwd').val();
-	if (userName && passwd) {
+	if (userName) {
 		var user = { 'name' : userName, 'passwd' : passwd };
 		$.ajax({
-			url: URLS.login,
+			url: URL_PRE + "/login",
 			data: JSON.stringify(user),
 			method: 'POST',
 			contentType: "application/json"})
 			.done(function() {
-				window.location.href = "index.html";
+				window.location.href = "userHome.html";
 			})
-		.fail(function(jqXHR, textStatus, errorThrown) {
-			alert("用户名，密码错误！");
-			$('#passwd').val = "";
-		});
+			.fail(function(jqXHR, textStatus, errorThrown) {
+				switch(jqXHR.status) {
+					case 401:
+						alert("密码错误！");
+						$('#passwd').val = "";
+						break;
+					case 404:
+						alert("用户名不存在！");
+						$('#passwd').val = "";
+				}
+			});
 	}
 }

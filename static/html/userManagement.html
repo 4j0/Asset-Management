@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>用户管理</title>
+		<link href="../css/bootstrap.min.css" rel="stylesheet">
+		<link href="../css/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet">
+		<link href="../css/userManagement.css" rel="stylesheet">
+		<link href="../css/layerSkin.css" rel="stylesheet">
+		<script src="../js/lib/jquery-3.1.1.js"></script>
+		<script src="../js/lib/loadingoverlay.js"></script>
+		<script src="../js/lib/layer.js"></script>
+		<script src="../js/lib/bootstrap.min.js"></script>
+		<script src="../js/lib/vue.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/User.js"></script>
+		<script src="../js/userManagement.js"></script>
+	</head>
+	<body>
+		<div id="app" class="container">
+
+			<div class="row" id="searchPanel">
+				<div class="col-lg-3">
+					<form class="" user="form">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="用户查询" v-model="userQueryInput">
+							<span class="input-group-btn">
+								<button v-on:click="userQuery" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+							</span>
+						</div><!-- /input-group -->
+					</form>
+
+					<table id="userTable" class="table">
+						<thead>
+							<tr>
+								<!--<th>名称</th>-->
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="User_tr" v-for="user in users">
+								<td v-on:click="userSelected(user, $event)">
+									<span class="fa fa-user fa-lg"></span> {{ user.name }} 
+								</td>
+								<td><span class="fa fa-lock fa-lg" v-on:click="clickResetPassword(user, $event)"></span></td>
+								<td><span class="glyphicon glyphicon-trash" v-on:click="clickTrash(user, $event)"></span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div><!-- /.col-lg-3 -->
+
+				<div class="col-lg-2">
+					<button type="button" class="btn btn-default" v-on:click="newUser">
+						<!--<span class="glyphicon glyphicon-plus"></span>-->
+						<span class="fa fa-user-plus fa-lg"></span>
+						新增用户
+					</button>
+				</div>
+
+				<div id="pList" class="col-lg-6" v-if="selectedUser">
+
+					<div  id="roleListPanel" class="panel panel-default">
+						<div class="panel-heading">
+								<button type="button" class="btn btn-default" v-on:click="showAddRolePanel" v-if="!showSaveBtn">
+									<span class="glyphicon glyphicon-plus"></span> 用户角色
+								</button>
+						</div>
+						<table class="table">
+							<tr>
+								<td v-for="role in selectedUser.roles">
+									<span class="icon-group"></span>
+									{{ role.name }}
+									<span class="glyphicon glyphicon-trash" v-on:click="handleRemoveRole(role)"></span>
+								</td>
+							</tr>
+						</table>
+					</div><!-- #roleListPanel -->
+
+					<div  id="pListPanel" class="panel panel-default" v-for="(value, key) in selectedUser.permission.dict">
+						<div class="panel-heading"> {{ LANG_MAP[key]}}管理模块 </div>
+							<table class="table">
+								<tr>
+									<td v-for="(v, k) in value">{{ LANG_MAP[k] }}
+										<input type="checkbox" v-on:click="showSaveBtn=true"
+											:disabled="selectedUser.rolePermission.dict[key][k]"
+											v-model="selectedUser.permission.dict[key][k]"
+											>
+									</td>
+								</tr>
+							</table>
+						<!--</div>[>/.panel-heading<]-->
+					</div><!-- #pListPanel -->
+					<button type="button" id="savePermissionBtn" class="btn btn-primary" v-if="showSaveBtn" v-on:click="savePermission()">保存</button>
+				</div><!-- #pList -->
+			</div><!-- /.row -->
+
+			<div id="addRoleRow" class="row modal fade">
+				<div class="col-lg-3 col-center-block">
+						<form class="" user="form">
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="角色查询" v-model="roleQueryInput">
+								<span class="input-group-btn">
+									<button v-on:click="roleQuery" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+								</span>
+							</div><!-- /input-group -->
+						</form>
+
+						<table id="roleTable" class="table">
+							<thead>
+								<tr>
+									<!--<th>名称</th>-->
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="Role_tr" v-for="role in roleQueryResult">
+									<td>
+										<span class="fa fa-group fa-lg"></span> {{ role.name }} 
+									</td>
+									<td>
+										<span class="fa fa-plus-circle fa-lg" v-on:click="addRole(role)"></span>
+									</td>
+								</tr>
+							</tbody>
+						</table>			
+					<!--</div>-->
+				</div><!-- col-lg-3 -->
+			</div><!-- #addRoleRow -->
+
+			<div id="addUser" class="row modal fade margin-top-40px">
+				<div class="col-lg-3 col-center-block">
+					<div class="input-group newUserInput">
+						<span class="input-group-addon"><i class="fa fa-user fa-lg"></i></span>
+						<input id="inputUserName" v-model="userName" type="text" class="form-control" placeholder="请输入用户名">
+					</div>
+					<div class="input-group newUserInput">
+						<span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span>
+						<input type="password" v-model="userPassword" type="text" class="newUserInput form-control" placeholder="请输入密码">
+					</div>
+					<div class="input-group newUserInput">
+						<span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span>
+						<input type="password" v-model="userPasswordConfirm" type="text" class="newUserInput form-control" placeholder="请再次输入密码">
+					</div>
+					<button type="button" id="newUserSubmit" class="btn btn-primary" v-on:click="submitNewUser">提交</button>
+					<button type="button" class="btn btn-default" v-on:click="clearInputBox()" data-dismiss="modal">关闭</button>
+				</div><!-- col-lg-3 -->
+			</div><!-- #addRoleRow -->
+
+			<div id="resetUserPassword" class="row modal fade margin-top-40px">
+				<div class="col-lg-3 col-center-block">
+					<div class="input-group newUserInput">
+						<span class="input-group-addon"><i class="fa fa-user fa-lg"></i></span>
+						<input :disabled="true" v-model="userName" type="text" class="form-control">
+					</div>
+					<div class="input-group newUserInput">
+						<span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span>
+						<input type="password" v-model="userPassword" type="text" class="form-control" placeholder="请输入密码">
+					</div>
+					<div class="input-group newUserInput">
+						<span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span>
+						<input type="password" v-model="userPasswordConfirm" type="text" class="form-control" placeholder="请再次输入密码">
+					</div>
+					<button type="button" class="btn btn-primary" v-on:click="submitUserPassword">提交</button>
+					<button type="button" class="btn btn-default" v-on:click="clearInputBox()" data-dismiss="modal">关闭</button>
+				</div><!-- col-lg-3 -->
+			</div><!-- #addRoleRow -->
+
+		</div><!-- /#app.container -->
+	</body>
+</html>
+
