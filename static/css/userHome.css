@@ -1,0 +1,15 @@
+.modules-container {
+	display: flex;
+}
+
+.modules-div {
+	margin-right: 35px;
+}
+
+.modules-a {
+	color: #333333;
+}
+
+#modules-row {
+	margin-top: 20px;
+}

@@ -1,0 +1,2 @@
+DB_CONFIG = {'server' : 'localhost', 'username' : 'root', 'password' : '123456', 'db' : 'nccc'}
+TEST_DB_CONFIG = {'server' : 'localhost', 'username' : 'root', 'password' : '123456', 'db' : 'nccc_test'}

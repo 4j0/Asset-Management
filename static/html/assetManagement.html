@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>固定资产管理</title>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/simplePagination.css">
+		<link rel="stylesheet" type="text/css" href="../css/assetManagement.css">
+		<script src="../js/lib/vue.js"></script>
+		<script src="../js/lib/jquery-3.1.1.js"></script>
+		<script src="../js/lib/layer.js"></script>
+		<script src="../js/lib/bootstrap.min.js"></script>
+		<script src="../js/lib/jquery.simplePagination.js"></script>
+		<script src="../js/lib/jquery.validate.js"></script>
+		<script src="../js/lib/loadingoverlay.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/assetManagement.js"></script>
+	</head>
+	<body>
+		<div id="app" class="container">
+		
+			<div id="queryRow" class="row">
+				<div id="newAsset-div" class="col-lg-1 col-lg-offset-3">
+					<button type="button" class="btn btn-default" v-on:click="newAsset">
+						<span class="glyphicon glyphicon-plus-sign"></span>
+						新增资产
+					</button>
+				</div>
+
+				<div class="col-lg-4">
+					<form role="form">
+						<div class="input-group">
+							<input type="text" class="form-control" @keyup.enter="queryAsset(1, true)" @keyup.shift.191="showHelp" v-model="queryStr" placeholder="输入?获取查询帮助">
+							<span class="input-group-btn">
+								<button v-on:click="queryAsset(1, true)" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+							</span>
+						</div><!-- /input-group -->
+					</form>
+				</div>
+			</div>
+
+			<div id="result_panel" class="row" v-if="assets.length > 0">
+				<div class="col-lg-12">
+					<table id="result_table" class="table table-condensed table-hover">
+						<thead>
+							<tr id="result_table_header">
+								<th class="result_table_header_th"></th>
+								<th class="result_table_header_th"></th>
+								<th class="result_table_header_th">company</th>
+								<th class="result_table_header_th">asset_tag</th>
+								<th class="result_table_header_th">asset_state</th>
+								<th class="result_table_header_th">purchase_date</th>
+								<th class="result_table_header_th">sn</th>
+								<th class="result_table_header_th">user</th>
+								<th class="result_table_header_th">location</th>
+								<!--<th class="result_table_header_th">specific_location</th>-->
+								<th class="result_table_header_th">type</th>
+								<th class="result_table_header_th">model</th>
+								<!--<th class="result_table_header_th">os</th>-->
+								<th class="result_table_header_th">mac_wireless</th>
+								<th class="result_table_header_th">mac_wired</th>
+								<th class="result_table_header_th">remark</th>
+							</tr>
+						</thead>
+						<tbody id="assets-tbody">
+							<tr v-for="asset in assets">
+								<td class="result_table_td r_edit"><span class="glyphicon glyphicon-edit" @click="editAsset(asset)"></span></td>
+								<td class="result_table_td r_del"><span class="glyphicon glyphicon-trash" @click="delAsset(asset)"></span></td>
+								<td class="result_table_td">{{ asset.company }}</td>
+								<td class="result_table_td r_asset_tag">{{ asset.asset_tag }}</td>
+								<td class="result_table_td r_asset_state">{{ asset.asset_state }}</td>
+								<td class="result_table_td">{{ asset.purchase_date }}</td>
+								<td class="result_table_td r_sn">{{ asset.sn }}</td>
+								<td class="result_table_td r_user">{{ asset.user }}</td>
+								<td class="result_table_td r_location">{{ asset.location }}</td>
+								<!--<td class="result_table_td r_specific_location">{{ asset.specific_location }}</td>-->
+								<td class="result_table_td r_type">{{ asset.type }}</td>
+								<td class="result_table_td r_model">{{ asset.model }}</td>
+								<!--<td class="result_table_td r_os">{{ asset.os }}</td>-->
+								<td class="result_table_td r_mac_wireless">{{ asset.mac_wireless }}</td>
+								<td class="result_table_td r_mac_wired">{{ asset.mac_wired }}</td>
+								<td class="result_table_td r_remark">{{ asset.remark }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="row">
+				<div id="pagination_div" class="col-lg-6 col-center-block">
+					<ul id="pagination_ul" class="pagination-sm"></ul>
+				</div>
+			</div>
+
+			<div id="edit_panel" class="modal fade">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<!--<div class="modal-header">-->
+						<!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+						<!--<h4 class="modal-title" id="myModalLabel">编辑资产</h4>-->
+						<!--</div>-->
+						<div class="modal-body">
+							<form id="assetEditForm" class="form-horizontal" role="form">
+								<div class="form-group each-form-group">
+									<label for="editBox_company" class="col-sm-3 control-label text-muted"><span class="required">*</span>company</label>
+									<div id="editBox_company" class="col-sm-5">
+										<select name="company" class="form-control input-sm" v-model="editBox.company">
+											<option>NALC</option>
+											<option>NCCC</option>
+											<option>NVPC</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group each-form-group">
+									<label for="editBox_asset_tag" class="col-sm-3 control-label text-muted"><span class="required">*</span>asset_tag</label>
+									<div class="col-sm-5">
+										<input id="editBox_asset_tag" name="asset_tag" type="text" class="form-control input-sm" placeholder="" v-model="editBox.asset_tag">
+									</div>
+								</div>
+								<div class="form-group each-form-group">
+									<label for="editBox_asset_state" class="col-sm-3 control-label text-muted"><span class="required">*</span>asset_state</label>
+									<div class="col-sm-5">
+										<select id="editBox_asset_state" name="asset_state" class="form-control input-sm" v-model="editBox.asset_state">
+											<option>在用</option>
+											<option>报废</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group each-form-group">
+									<label for="editBox_purchase_date" class="col-sm-3 control-label text-muted">purchase_date</label>
+									<div class="col-sm-5">
+										<input name="purchase_date" id="editBox_purchase_date" type="text" class="form-control input-sm" placeholder="2017-01-01" v-model="editBox.purchase_date">
+									</div>
+								</div>
+								<div class="form-group each-form-group">
+									<label for="editBox_sn" class="col-sm-3 control-label text-muted">sn</label>
+									<div class="col-sm-5">
+										<input id="editBox_sn" name="sn" type="text" class="form-control input-sm" placeholder="" v-model="editBox.sn">
+									</div>
+								</div>
+								<div class="form-group each-form-group">
+									<label for="editBox_user" class="col-sm-3 control-label text-muted">user</label>
+									<div class="col-sm-5">
+										<input id="editBox_user" name="user" type="text" class="form-control input-sm" placeholder="" v-model="editBox.user">
+									</div>
+								</div>
+								<div class="form-group each-form-group">
+									<label for="editBox_location" class="col-sm-3 control-label text-muted">location</label>
+									<div class="col-sm-5">
+										<select id="editBox_location" class="form-control input-sm ignore" v-model="editBox.location">
+											<option>海徐路</option>
+											<option>来福士</option>
+											<option>申东路</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group each-form-group">
+									<label for="editBox_type" class="col-sm-3 control-label text-muted">type</label>
+									<div class="col-sm-5">
+										<select id="editBox_type" class="form-control input-sm ignore" v-model="editBox.type">
+											<option>笔记本</option>
+											<option>台式机</option>
+											<option>手机</option>
+											<option>平板</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group each-form-group">
+									<label for="editBox_model" class="col-sm-3 control-label text-muted">model</label>
+									<div class="col-sm-5">
+										<input id="editBox_model" name="model" type="text" class="form-control input-sm" placeholder="" v-model="editBox.model" list="datalist_model">
+									</div>
+								</div>
+								<div class="form-group each-form-group">
+									<label for="editBox_mac_wireless" class="col-sm-3 control-label text-muted">mac_wireless</label>
+									<div class="col-sm-5">
+										<input id="editBox_mac_wireless" name="mac_wireless" type="text" class="form-control input-sm" placeholder="" v-model="editBox.mac_wireless">
+									</div>
+								</div>
+								<div class="form-group each-form-group">
+									<label for="editBox_mac_wired" class="col-sm-3 control-label text-muted">mac_wired</label>
+									<div class="col-sm-5">
+										<input id="editBox_mac_wired" name="mac_wired" type="text" class="form-control input-sm" placeholder="" v-model="editBox.mac_wired">
+									</div>
+								</div>
+								<div class="form-group each-form-group">
+									<label for="editBox_remark" class="col-sm-3 control-label text-muted">remark</label>
+									<div class="col-sm-5">
+										<input id="editBox_remark" name="remark" type="text" class="form-control input-sm" placeholder="" v-model="editBox.remark">
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" v-if="showPostAssetBtn" v-on:click="postAsset">提交</button>
+							<button type="button" class="btn btn-primary" v-if="showPutAssetBtn" v-on:click="putAsset">保存</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->					
+			</div><!-- /.modal -->
+
+			<div id="helpModal" class="modal fade" tabindex="-1" role="dialog">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title">查询帮助</h4>
+						</div>
+						<div class="modal-body">
+							<div id="helpDoc-div">
+								<b><p>查询单个条件</p></b>
+								<p>在搜索栏输入单个条件，如输入“NCCC”则是查询所有NCCC的资产。<p>
+								<b><p>查询多个条件and(和)</p></b>
+								<p>在搜索栏输入多个条件并用符号“&”连接，如输入“NCCC&笔记本”则是查询所有NCCC的笔记本。</p>
+								<b><p>查询多个条件or(或)</p></b>
+								<p>在搜索栏输入多个条件并用符号“|”连接，如输入“NCCC|NALC”则是查询NCCC或NALC的所有资产。</p>
+								<b><p>如查询的条件中包含空格则需要将查询条件包裹在一对双引号之内，如:"Mac Book"。</p></b>
+								<b><p>所有查询不区分大小写</p></b>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+
+			<datalist id="datalist_model">
+				<option value="DELL Optiplex 390">
+				<option value="DELL Latitude">
+				<option value="DELL Latitude 3450">
+				<option value="DELL Latitude 3460">
+				<option value="Microsoft Surface Pro 4">
+				<option value="Mac Book Pro">
+			</datalist>
+		</div>
+	</body>
+</html>

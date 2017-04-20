@@ -1,0 +1,93 @@
+---
+- config:
+    - testset: "RoleManagement"
+
+- test:
+    - group: "updateRolePermission"
+    - name: "post a invalid roleID 0"
+    - url: "/RoleManagement/roles/0/permission"
+    - method: "PUT"
+    - body: '{"permission": 8}'
+    - headers: {'Content-Type': 'application/json'}
+    - expected_status: [400]
+
+- test:
+    - group: "updateRolePermission"
+    - name: "post a invalid permission 2147483648"
+    - url: "/RoleManagement/roles/1/permission"
+    - method: "PUT"
+    - body: '{"permission": 2147483648}'
+    - headers: {'Content-Type': 'application/json'}
+    - expected_status: [400]
+
+- test:
+    - group: "updateRolePermission"
+    - name: "post a invalid permission -1"
+    - url: "/RoleManagement/roles/1/permission"
+    - method: "PUT"
+    - body: '{"permission": -1}'
+    - headers: {'Content-Type': 'application/json'}
+    - expected_status: [400]
+
+- test:
+    - group: "updateRolePermission"
+    - name: "post a None role_id 9999999"
+    - url: "/RoleManagement/roles/9999999/permission"
+    - method: "PUT"
+    - body: '{"permission": 4}'
+    - headers: {'Content-Type': 'application/json'}
+    - expected_status: [404]
+
+- test:
+    - group: "updateRolePermission"
+    - name: "put a invalid Content-Type"
+    - url: "/RoleManagement/roles/5/permission"
+    - method: "PUT"
+    #- body: '{"permission": 4}'
+    - headers: {'Content-Type': 'text/html'}
+    - expected_status: [400]
+
+- test:
+    - group: "updateRolePermission"
+    - name: "post a valid permission"
+    - url: "/RoleManagement/roles/5/permission"
+    - method: "PUT"
+    - body: '{"permission": 4}'
+    - headers: {'Content-Type': 'application/json'}
+    - expected_status: [200]
+
+- test:
+    - group: "postRole"
+    - name: "post a invalid Content-Type"
+    - url: "/RoleManagement/roles"
+    - method: "POST"
+    - body: '{"name": "new", "permission" : 1}'
+    - headers: {'Content-Type': 'text/html'}
+    - expected_status: [400]
+
+- test:
+    - group: "postRole"
+    - name: "post a invalid json format"
+    - url: "/RoleManagement/roles"
+    - method: "POST"
+    - body: 'ssssss'
+    - headers: {'Content-Type': 'application/json'}
+    - expected_status: [400]
+
+- test:
+    - group: "postRole"
+    - name: "post invalid json data -just have name"
+    - url: "/RoleManagement/roles"
+    - method: "POST"
+    - body: '{"name": "new"}'
+    - headers: {'Content-Type': 'application/json'}
+    - expected_status: [400]
+
+- test:
+    - group: "postRole"
+    - name: "post invalid json data -permission='str'"
+    - url: "/RoleManagement/roles"
+    - method: "POST"
+    - body: '{"name": "new", "permission":"str"}'
+    - headers: {'Content-Type': 'application/json'}
+    - expected_status: [400]
