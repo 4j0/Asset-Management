@@ -13,6 +13,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://%s:%s@%s/%s' % (\
         DB_CONFIG['password'],\
         DB_CONFIG['server'],\
         DB_CONFIG['db'])
+db.init_app(app)
 
 app.register_blueprint(AssetManagement)
 app.register_blueprint(Login)
@@ -24,6 +25,5 @@ def initialize_database():
     db.create_all()
 
 if __name__ == "__main__":
-    db.init_app(app)
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0')
 
