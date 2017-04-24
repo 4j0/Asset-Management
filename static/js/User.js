@@ -165,13 +165,11 @@ User.prototype = {
 	},
 
 	removeRole : function(role) {
-		console.log("User.removeRole:" + role.name);
 		var data = JSON.stringify({ user_id : this.id, role_id : role.id });
 		var url = URL_PRE + "/user_and_role_relationships";
 		$.json_delete(url, data ,'json')
 			.done(function(data) {
 				var jsonData = JSON.parse(data);
-				console.log("User.removeRole.done:" + jsonData.role_name);
 				var i = 0;
 				for (; i < this.roles.length; i++) {
 					if (this.roles[i].id === jsonData.role_id) {
