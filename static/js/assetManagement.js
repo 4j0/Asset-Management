@@ -231,10 +231,6 @@ $(document).ready(function(){
 		},
 	});
 
-	$("#queryBox").keydown(function(event) {
-		console.log(event.keyCode);
-	});
-
 	$('#edit_panel').on("hidden.bs.modal", function() {
 		vue.clearEditBox();
 	});

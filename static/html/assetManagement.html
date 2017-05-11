@@ -28,7 +28,7 @@
 				</div>
 
 				<div class="col-lg-4">
-					<form role="form">
+					<form role="form" v-on:submit.prevent="">
 						<div class="input-group">
 							<input type="text" class="form-control" @keyup.enter="queryAsset(1, true)" @keyup.shift.191="showHelp" v-model="queryStr" placeholder="输入?获取查询帮助">
 							<span class="input-group-btn">
