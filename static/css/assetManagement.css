@@ -38,3 +38,12 @@
 #result_table {
 	white-space:nowrap;
 }
+/*使分页项居中*/
+ul {
+	text-align: center;
+}
+/*使分页项居中*/
+.simple-pagination li {
+	display: inline-block;
+	float: none;
+}
