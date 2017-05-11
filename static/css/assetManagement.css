@@ -34,3 +34,7 @@
 #newAsset-div {
 	margin-right: 40px;
 }
+
+#result_table {
+	white-space:nowrap;
+}
