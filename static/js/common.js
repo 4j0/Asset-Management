@@ -1,25 +1,3 @@
-/*jQuery.each( [ "json_put", "json_delete", "json_post" ], function( i, method ) {
-	jQuery[ method ] = function( url, data, callback, type ) {
-
-		// Shift arguments if data argument was omitted
-		if ( jQuery.isFunction( data ) ) {
-			type = type || callback;
-			callback = data;
-			data = undefined;
-		}
-
-		// The url can be an options object (which then must have .url)
-		return jQuery.ajax( jQuery.extend( {
-			url: url,
-			type: method.split("_")[1],
-			dataType: type,
-			contentType: "application/json",
-			data: data,
-			success: callback
-		}, jQuery.isPlainObject( url ) && url ) );
-	};
-} );*/
-
 var HOST = window.location.host;
 var PROTOCOL = "http://";
 var APP = "";
@@ -139,57 +117,73 @@ function remove(array, element) {
     //return array.filter(e => e !== element);
 //}
 
-/*function find_obj_by_key_value(key, value, array){*/
-    //for (var i=0; i < array.length; i++) {
-        //if (array[i][key] === value) {
-            //return array[i];
-        //}
-    //}
-//}
-
-//function jsonToQueryString(json) {
-	//return '?' + 
-		//Object.keys(json).map(function(key) {
-			//return encodeURIComponent(key) + '=' +
-				//encodeURIComponent(json[key]);
-		//}).join('&');
-//}
-
-//function clearFalse(obj) {
-	//var _new = clone(obj);
-	//Object.keys(_new).forEach(function (key) {
-		//if(isFalse(_new[key])) {
-			//delete _new[key];
-		//}
-	//});
-	//return _new;
-/*}*/
-
 function isFalse(value) {
 	return value ? false : true;
 }
 
-/*Layer = {*/
+//Ppd = Post Put Delete
+var Ppd = function(data) {
+	if (data) {
+		this.id = data.id;
+		this.data = {};
+		this.update(data);
+	}
+};
 
-	//open : function(ele) {
-		//if (ele instanceof jQuery) {
-			//throw "ele should not be a jQuery object!";
-		//}	
-		//var _ele = $(ele);
-		//var index = layer.open({
-			//type: 1,
-			//content: _ele,
-			//closeBtn: 0
-		//});
-		//ele.layerIndex = index;
+Ppd.prototype = {
+
+	post: function() {
+		var def = $.Deferred();
+		var data = JSON.stringify(this.data);
+		$.json_post(this.URL, data, 'json')
+			.done(function(data) {
+				var dataObj = JSON.parse(data);
+				this.id = dataObj.id;
+				def.resolve();
+			}.bind(this))
+		.fail(function(jqXHR) {
+			def.reject(jqXHR);
+			alertError(jqXHR);
+		});
+		return def.promise();
+	},
+
+	put: function(_data) {
+		var def = $.Deferred();
+		_data = JSON.stringify(_data);
+		var url = this.URL + "/" + this.id;
+		$.json_put(url, _data, 'json')
+			.done(function(data) {
+				this.data = JSON.parse(_data);
+				def.resolve();
+			}.bind(this))
+		.fail(function(jqXHR) {
+			def.reject(jqXHR);
+			alertError(jqXHR);
+		});
+		return def.promise();
+	},
+
+	patch: function() {
+
+	},
+
+	//url: function() {
+		//return this.URL + "/" + this.id;
 	//},
 
-	//close : function(ele) {
-		//if (ele instanceof jQuery) {
-			//throw "ele should not be a jQuery object!";
-		//}	
-		//layer.close(ele.layerIndex);
-		//ele.layerIndex = undefined;
-	//},
-
-/*};*/
+	del: function() {
+		var def = $.Deferred();
+		var data = JSON.stringify({ "id" : this.id });
+		var url = this.URL + "/" + this.id;
+		$.json_delete(url, data)
+			.done(function() {
+				def.resolve();
+			})
+		.fail(function(jqXHR) {
+			def.reject(jqXHR);
+			alertError(jqXHR);
+		});
+		return def.promise();
+	},
+};

@@ -6,73 +6,25 @@ function reBuildPag(pag, total) {
 }
 
 var Asset = function(data) {
-	this.id = data.id;
-	this.update(data);
+	Ppd.call(this);
 };
 
-Asset.prototype = {
+Asset.prototype = new Ppd();
+Asset.prototype.URL = URL_PRE + "/assets";
 
-	update: function(data) {
-		this.company = data.company;
-		this.asset_tag = data.asset_tag;
-		this.asset_state = data.asset_state;
-		this.purchase_date = data.purchase_date === '' ?  null : data.purchase_date;
-		this.sn = data.sn;
-		this.user = data.user;
-		this.location = data.location;
-		//this.specific_location = data.specific_location;
-		this.type = data.type;
-		this.model = data.model;
-		this.mac_wireless = data.mac_wireless;
-		this.mac_wired = data.mac_wired;
-		this.remark = data.remark;
-	},
-
-	post: function() {
-		var def = $.Deferred();
-		var data = JSON.stringify(this);
-		$.json_post(URL_PRE + "/assets", data, 'json')
-			.done(function(data) {
-				var dataObj = JSON.parse(data);
-				this.id = dataObj.id;
-				def.resolve();
-			}.bind(this))
-		.fail(function(jqXHR) {
-			def.reject(jqXHR);
-			alertError(jqXHR);
-		});
-		return def.promise();
-	},
-
-	put: function(data) {
-		var def = $.Deferred();
-		data = JSON.stringify(data);
-		var url = URL_PRE + "/assets/" + this.id;
-		$.json_put(url, data, 'json')
-			.done(function(data) {
-				def.resolve();
-			}.bind(this))
-		.fail(function(jqXHR) {
-			def.reject(jqXHR);
-			alertError(jqXHR);
-		});
-		return def.promise();
-	},
-
-	delete: function() {
-		var def = $.Deferred();
-		var data = JSON.stringify({ "id" : this.id });
-		var url = URL_PRE + "/assets/" + this.id;
-		$.json_delete(url, data)
-			.done(function() {
-				def.resolve();
-			})
-		.fail(function(jqXHR) {
-			def.reject(jqXHR);
-		});
-		return def.promise();
-	},
-
+Asset.prototype.update = function(data) {
+	this.data.company = data.company;
+	this.data.asset_tag = data.asset_tag;
+	this.data.asset_state = data.asset_state;
+	this.data.purchase_date = data.purchase_date === '' ?  null : data.purchase_date;
+	this.data.sn = data.sn;
+	this.data.user = data.user;
+	this.data.location = data.location;
+	this.data.type = data.type;
+	this.data.model = data.model;
+	this.data.mac_wireless = data.mac_wireless;
+	this.data.mac_wired = data.mac_wired;
+	this.data.remark = data.remark;
 };
 
 var Query = function(str) {
@@ -189,7 +141,7 @@ $(document).ready(function(){
 				if (window.validator.form()) {
 					this.editing_asset.put(this.editBox)
 						.done(function() {
-							this.editing_asset.update(this.editBox);
+							//this.editing_asset.update(this.editBox);
 							$('#edit_panel').modal('hide');
 						}.bind(this));
 				}
@@ -200,7 +152,8 @@ $(document).ready(function(){
 				this.showPutAssetBtn = true;
 				$('#edit_panel').modal('show');
 				for (var key in this.editBox) {
-					this.editBox[key] = asset[key];
+					//this.editBox[key] = asset[key];
+					this.editBox[key] = asset.data[key];
 				}
 				this.editing_asset = asset;
 			},
@@ -209,7 +162,8 @@ $(document).ready(function(){
 				var self = this;
 				layer.confirm("是否删除{0} {1}？".format(asset.company, asset.asset_tag), { title:"提示", }, 
 						function(index) {
-							asset.delete()
+							//asset.delete()
+							asset.del()
 								.done(function() {
 									var _index = self.assets.indexOf(asset);
 									if (_index > -1) {

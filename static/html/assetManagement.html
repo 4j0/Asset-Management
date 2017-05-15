@@ -67,20 +67,18 @@
 							<tr v-for="asset in assets">
 								<td class="result_table_td r_edit"><span class="glyphicon glyphicon-edit" @click="editAsset(asset)"></span></td>
 								<td class="result_table_td r_del"><span class="glyphicon glyphicon-trash" @click="delAsset(asset)"></span></td>
-								<td class="result_table_td">{{ asset.company }}</td>
-								<td class="result_table_td r_asset_tag">{{ asset.asset_tag }}</td>
-								<td class="result_table_td r_asset_state">{{ asset.asset_state }}</td>
-								<td class="result_table_td">{{ asset.purchase_date }}</td>
-								<td class="result_table_td r_sn">{{ asset.sn }}</td>
-								<td class="result_table_td r_user">{{ asset.user }}</td>
-								<td class="result_table_td r_location">{{ asset.location }}</td>
-								<!--<td class="result_table_td r_specific_location">{{ asset.specific_location }}</td>-->
-								<td class="result_table_td r_type">{{ asset.type }}</td>
-								<td class="result_table_td r_model">{{ asset.model }}</td>
-								<!--<td class="result_table_td r_os">{{ asset.os }}</td>-->
-								<td class="result_table_td r_mac_wireless">{{ asset.mac_wireless }}</td>
-								<td class="result_table_td r_mac_wired">{{ asset.mac_wired }}</td>
-								<td class="result_table_td r_remark">{{ asset.remark }}</td>
+								<td class="result_table_td">{{ asset.data.company }}</td>
+								<td class="result_table_td r_asset_tag">{{ asset.data.asset_tag }}</td>
+								<td class="result_table_td r_asset_state">{{ asset.data.asset_state }}</td>
+								<td class="result_table_td">{{ asset.data.purchase_date }}</td>
+								<td class="result_table_td r_sn">{{ asset.data.sn }}</td>
+								<td class="result_table_td r_user">{{ asset.data.user }}</td>
+								<td class="result_table_td r_location">{{ asset.data.location }}</td>
+								<td class="result_table_td r_type">{{ asset.data.type }}</td>
+								<td class="result_table_td r_model">{{ asset.data.model }}</td>
+								<td class="result_table_td r_mac_wireless">{{ asset.data.mac_wireless }}</td>
+								<td class="result_table_td r_mac_wired">{{ asset.data.mac_wired }}</td>
+								<td class="result_table_td r_remark">{{ asset.data.remark }}</td>
 							</tr>
 						</tbody>
 					</table>
