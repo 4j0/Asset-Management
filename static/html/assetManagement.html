@@ -57,7 +57,7 @@
 								<!--<th class="result_table_header_th">specific_location</th>-->
 								<th class="result_table_header_th">type</th>
 								<th class="result_table_header_th">model</th>
-								<!--<th class="result_table_header_th">os</th>-->
+								<th class="result_table_header_th">os</th>
 								<th class="result_table_header_th">mac_wireless</th>
 								<th class="result_table_header_th">mac_wired</th>
 								<th class="result_table_header_th">remark</th>
@@ -77,7 +77,7 @@
 								<!--<td class="result_table_td r_specific_location">{{ asset.specific_location }}</td>-->
 								<td class="result_table_td r_type">{{ asset.type }}</td>
 								<td class="result_table_td r_model">{{ asset.model }}</td>
-								<!--<td class="result_table_td r_os">{{ asset.os }}</td>-->
+								<td class="result_table_td r_os">{{ asset.os }}</td>
 								<td class="result_table_td r_mac_wireless">{{ asset.mac_wireless }}</td>
 								<td class="result_table_td r_mac_wired">{{ asset.mac_wired }}</td>
 								<td class="result_table_td r_remark">{{ asset.remark }}</td>
@@ -173,6 +173,12 @@
 									</div>
 								</div>
 								<div class="form-group each-form-group">
+									<label for="editBox_model" class="col-sm-3 control-label text-muted">os</label>
+									<div class="col-sm-5">
+										<input id="editBox_os" name="os" type="text" class="form-control input-sm" placeholder="" v-model="editBox.os" list="datalist_os">
+									</div>
+								</div>
+								<div class="form-group each-form-group">
 									<label for="editBox_mac_wireless" class="col-sm-3 control-label text-muted">mac_wireless</label>
 									<div class="col-sm-5">
 										<input id="editBox_mac_wireless" name="mac_wireless" type="text" class="form-control input-sm" placeholder="" v-model="editBox.mac_wireless">
@@ -235,6 +241,20 @@
 				<option value="Microsoft Surface Pro 4">
 				<option value="Mac Book Pro">
 			</datalist>
+			<datalist id="datalist_os">
+				<option value="Win XP">
+				<option value="Win7 32">
+				<option value="Win7 64">
+				<option value="Win8 32">
+				<option value="Win8 64">
+				<option value="Win10 32">
+				<option value="Win10 64">
+				<option value="macOS 10.9">
+				<option value="macOS 10.10">
+				<option value="macOS 10.11">
+				<option value="macOS 10.12">
+			</datalist>
+
 		</div>
 	</body>
 </html>

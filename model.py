@@ -31,6 +31,7 @@ class Asset(db.Model):
     location = db.Column(db.String(20), nullable=False, default='')
     type = db.Column(db.String(6), nullable=False, default='')
     model = db.Column(db.String(30), nullable=False, default='')
+    os = db.Column(db.String(30), nullable=False, default='')
     mac_wireless = db.Column(db.String(17), nullable=False, default='')
     mac_wired = db.Column(db.String(17), nullable=False, default='')
     remark = db.Column(db.String(255), nullable=False, default='')
