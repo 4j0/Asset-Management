@@ -22,6 +22,7 @@ def filterLikeReduce(f, n):
             (Asset.location.ilike(u'%{0}%'.format(n))) |\
             (Asset.type.ilike(u'%{0}%'.format(n))) |\
             (Asset.model.ilike(u'%{0}%'.format(n))) |\
+            (Asset.os.ilike(u'%{0}%'.format(n))) |\
             (Asset.mac_wireless.ilike(u'%{0}%'.format(n))) |\
             (Asset.mac_wired.ilike(u'%{0}%'.format(n))) |\
             (Asset.remark.ilike(u'%{0}%'.format(n)))\
@@ -42,6 +43,7 @@ def queryAssetsLike(criteria):
         clauses.append(Asset.location.ilike(c))
         clauses.append(Asset.type.ilike(c))
         clauses.append(Asset.model.ilike(c))
+        clauses.append(Asset.os.ilike(c))
         clauses.append(Asset.mac_wireless.ilike(c))
         clauses.append(Asset.mac_wired.ilike(c))
         clauses.append(Asset.remark.ilike(c))

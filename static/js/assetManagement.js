@@ -23,6 +23,7 @@ Asset.prototype = {
 		//this.specific_location = data.specific_location;
 		this.type = data.type;
 		this.model = data.model;
+		this.os = data.os;
 		this.mac_wireless = data.mac_wireless;
 		this.mac_wired = data.mac_wired;
 		this.remark = data.remark;
@@ -275,6 +276,9 @@ $(document).ready(function(){
 				//maxlength: 6,
 			/*},*/
 			model: {
+				maxlength: 30,
+			},
+			os: {
 				maxlength: 30,
 			},
 			mac_wireless: {
