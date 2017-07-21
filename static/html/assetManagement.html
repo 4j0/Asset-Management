@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
 		<title>固定资产管理</title>
 		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/font-awesome-4.7.0/css/font-awesome.css">
 		<link rel="stylesheet" type="text/css" href="../css/simplePagination.css">
 		<link rel="stylesheet" type="text/css" href="../css/assetManagement.css">
 		<script src="../js/lib/vue.js"></script>
@@ -28,12 +29,12 @@
 				</div>
 
 				<div class="col-lg-4">
-					<!--如果不在form中定义submit.revent的话会导致第一次输入查询条件后按回车时不调用查询函数-->
-					<form role="form" v-on:submit.prevent="queryAsset(1, true)">
+					<!--如果不在form中定义submit.prevent的话会导致第一次输入查询条件后按回车时不调用查询函数-->
+					<form role="form" v-on:submit.prevent="executeQuery()">
 						<div class="input-group">
 							<input type="text" class="form-control" @keyup.shift.191="showHelp" v-model="queryStr" placeholder="输入?获取查询帮助">
 							<span class="input-group-btn">
-								<button v-on:click="queryAsset(1, true)" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+								<button v-on:click="executeQuery()" class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
 							</span>
 						</div><!-- /input-group -->
 					</form>
@@ -47,20 +48,20 @@
 							<tr id="result_table_header">
 								<th class="result_table_header_th"></th>
 								<th class="result_table_header_th"></th>
-								<th class="result_table_header_th">company</th>
-								<th class="result_table_header_th">asset_tag</th>
-								<th class="result_table_header_th">asset_state</th>
-								<th class="result_table_header_th">purchase_date</th>
-								<th class="result_table_header_th">sn</th>
-								<th class="result_table_header_th">user</th>
-								<th class="result_table_header_th">location</th>
+								<th class="result_table_header_th">company <span class="fa fa-sort" @click="sortAsset('company')"></span></th>
+								<th class="result_table_header_th">asset_tag <span class="fa fa-sort" @click="sortAsset('asset_tag')"></span></th>
+								<th class="result_table_header_th">asset_state <span class="fa fa-sort" @click="sortAsset('asset_state')"></span></th>
+								<th class="result_table_header_th">purchase_date <span class="fa fa-sort" @click="sortAsset('purchase_date')"></span></th>
+								<th class="result_table_header_th">sn <span class="fa fa-sort" @click="sortAsset('sn')"></span></th>
+								<th class="result_table_header_th">user <span class="fa fa-sort" @click="sortAsset('user')"></span></th>
+								<th class="result_table_header_th">location <span class="fa fa-sort" @click="sortAsset('location')"></span></th>
 								<!--<th class="result_table_header_th">specific_location</th>-->
-								<th class="result_table_header_th">type</th>
-								<th class="result_table_header_th">model</th>
-								<th class="result_table_header_th">os</th>
-								<th class="result_table_header_th">mac_wireless</th>
-								<th class="result_table_header_th">mac_wired</th>
-								<th class="result_table_header_th">remark</th>
+								<th class="result_table_header_th">type <span class="fa fa-sort" @click="sortAsset('type')"></span></th>
+								<th class="result_table_header_th">model <span class="fa fa-sort" @click="sortAsset('model')"></span></th>
+								<th class="result_table_header_th">os <span class="fa fa-sort" @click="sortAsset('os')"></span></th>
+								<th class="result_table_header_th">mac_wireless <span class="fa fa-sort" @click="sortAsset('mac_wireless')"></span></th>
+								<th class="result_table_header_th">mac_wired <span class="fa fa-sort" @click="sortAsset('mac_wired')"></span></th>
+								<th class="result_table_header_th">remark <span class="fa fa-sort" @click="sortAsset('remark')"></span></th>
 							</tr>
 						</thead>
 						<tbody id="assets-tbody">

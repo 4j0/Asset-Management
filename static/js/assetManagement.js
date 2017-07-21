@@ -76,11 +76,13 @@ Asset.prototype = {
 
 };
 
-var Query = function(str) {
+var Query = function(str, sort, order) {
 	this.str = str;
 	this.like = true;
 	this.logic = this.getLogic(this.str);
 	this.criteria = this.getCriteria(this.str, this.logic);
+	this.sort = sort;
+	this.order = order;
 };
 Query.per_page = 50;
 Query.prototype = {
@@ -111,7 +113,7 @@ Query.prototype = {
 		var q = this.criteria.map(function(c) {
 			return encodeURIComponent(c);
 		}).join("+");
-		return "?q=" + q + "&logic={0}&like={1}&page={2}&per_page={3}".format(this.logic, this.like, page, Query.per_page); 
+		return "?q=" + q + "&logic={0}&like={1}&page={2}&per_page={3}&sort={4}&order={5}".format(this.logic, this.like, page, Query.per_page, this.sort, this.order); 
 	},
 };
 
@@ -121,6 +123,10 @@ $(document).ready(function(){
 		el: "#app",
 		data: {
 			queryStr : "",
+			default_sort: "asset_tag",
+			default_order: "asc",
+			sort: "",
+			order: "",
 			editBox: {	company: "",
 						asset_tag: "",
 						asset_state: "",
@@ -144,7 +150,7 @@ $(document).ready(function(){
 
 			queryAsset : function(page, buildPag) {
 				buildPag = (typeof buildPag !== 'undefined') ?  buildPag : false;
-				var query = new Query(this.queryStr);
+				var query = new Query(this.queryStr, this.sort, this.order);
 				var url = URL_PRE + "/assets" + query.get_url_str(page);
 				$._get(url)
 					.done(function(data) {
@@ -153,13 +159,24 @@ $(document).ready(function(){
 							reBuildPag(pag, response.pages);
 						}
 						this.assets = response.assets.map(function(each) { return new Asset(each); });
-						//if (this.assets.length > 0) {
 						if (response.pages > 1) {
 							$('#pagination_ul').show();
 						} else {
 							$('#pagination_ul').hide();
 						}
 					}.bind(this));
+			},
+
+			executeQuery : function() {
+				this.sort = this.default_sort;
+				this.order = this.default_order;
+				this.queryAsset(1, true);
+			},
+
+			sortAsset: function(sort) {
+				this.sort = sort;
+				this.order = this.sort === sort && this.order === "asc" ? "desc" : "asc";
+				this.queryAsset(pag.pagination('getCurrentPage'), false);
 			},
 
 			clearEditBox: function() {
