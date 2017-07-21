@@ -124,7 +124,7 @@ $(document).ready(function(){
 		data: {
 			queryStr : "",
 			default_sort: "asset_tag",
-			default_order: "asc",
+			default_order: "desc",
 			sort: "",
 			order: "",
 			editBox: {	company: "",
@@ -174,8 +174,8 @@ $(document).ready(function(){
 			},
 
 			sortAsset: function(sort) {
+				this.order = this.sort === sort && this.order === "desc" ? "asc" : "desc";
 				this.sort = sort;
-				this.order = this.sort === sort && this.order === "asc" ? "desc" : "asc";
 				this.queryAsset(pag.pagination('getCurrentPage'), false);
 			},
 
