@@ -113,6 +113,9 @@ Query.prototype = {
 		var q = this.criteria.map(function(c) {
 			return encodeURIComponent(c);
 		}).join("+");
+		if (typeof page === 'undefined') {
+			return "?q=" + q + "&logic={0}&like={1}&sort={2}&order={3}".format(this.logic, this.like, this.sort, this.order); 
+		}
 		return "?q=" + q + "&logic={0}&like={1}&page={2}&per_page={3}&sort={4}&order={5}".format(this.logic, this.like, page, Query.per_page, this.sort, this.order); 
 	},
 };
@@ -144,6 +147,7 @@ $(document).ready(function(){
 			assets: [],
 			showPostAssetBtn: false,
 			showPutAssetBtn: false,
+			showExportBtn: false,
 			editing_asset: null,
 		},
 		methods: {
@@ -164,7 +168,14 @@ $(document).ready(function(){
 						} else {
 							$('#pagination_ul').hide();
 						}
+						this.attachExportUrl();
 					}.bind(this));
+			},
+
+			attachExportUrl: function() {
+				var query = new Query(this.queryStr, this.sort, this.order);
+				var url = URL_PRE + "/assets" + query.get_url_str() + "&export=true";
+				document.getElementById("exportBtn").href = url;
 			},
 
 			executeQuery : function() {
