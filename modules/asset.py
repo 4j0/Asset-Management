@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-import json, re
-from flask import Blueprint
+import json, re, StringIO, csv
+import pdb
+from flask import Blueprint, send_file, Response
 from sqlalchemy.sql import and_, or_
-#from sqlalchemy import update
 from sqlalchemy import desc
 from flask import request, abort  
 from model import db, User, Asset
@@ -66,6 +66,18 @@ AssetManagement = Blueprint("AssetManagement", __name__)
         #return make_response('false', 200, {'Content-Type': 'application/json'})
     #return make_response('true', 200, {'Content-Type': 'application/json'})
 
+def export_to_csv(records):
+    strIO = StringIO.StringIO()
+    cw = csv.writer(strIO)
+    for record in records:
+        row = [getattr(record, column.name) for column in Asset.__mapper__.columns]
+        encodedRow = [item.encode('utf-8') if type(item) is unicode else item for item in row]
+        cw.writerow(encodedRow)
+    strIO.seek(0)
+    return send_file(strIO,
+                     attachment_filename="assets.csv",
+                     as_attachment=True)
+
 @AssetManagement.route("/assets", methods=['GET'])
 @login_required
 @permission(PERMISSIONS['asset']['query'] | PERMISSIONS['asset']['all'])
@@ -90,6 +102,9 @@ def get_assets():
                 query = query.order_by(desc(args['sort']))
         else:
             query = query.order_by(args['sort'])
+    if args.has_key('export') and args['export'] == 'true':
+        records = query.all()
+        return export_to_csv(records)
     #If page or per_page are None, they will be retrieved from the request query.
     pagination = query.paginate()
     return json.dumps({ 'assets': pagination.items, 'pages':pagination.pages }, cls=DB_ModelEncoder)
