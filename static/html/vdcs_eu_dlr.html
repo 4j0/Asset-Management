@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>EU|DLR</title>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/font-awesome-4.7.0/css/font-awesome.css">
+		<script src="../js/lib/vue.js"></script>
+		<script src="../js/lib/jquery-3.1.1.js"></script>
+		<script src="../js/lib/layer.js"></script>
+		<script src="../js/lib/bootstrap.min.js"></script>
+		<script src="../js/lib/bootstrap-filestyle.js"></script>
+		<script src="../js/lib/loadingoverlay.js"></script>
+		<script src="../js/lib/papaparse.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/vdcs_eu_dlr.js"></script>
+	</head>
+
+	<body>
+		<div id="app" class="container">
+
+			<div id="uploadRow" class="row">
+				<div class="col-lg-4">
+					<form method="post" enctype="multipart/form-data">
+						<input id="uploadFile" type="file" accept="text/csv" name="file" @click="setInputValueToNull()" @change="attachFile()"></input>
+					</form>	
+				</div>
+			</div>
+
+			<div id="carTable" class="row">
+				<div class="col-lg-8">
+					<table id="result_table" class="table table-condensed table-hover">
+						<thead>
+							<tr id="">
+								<th class="">Vin码</th>
+								<th class="">状态</th>
+								<th class="">错误信息</th>
+							</tr>
+						</thead>
+						<tbody id="">
+							<tr v-for="row in dataRows">
+								<td v-bind:class="{ danger: row.error !== null && row.error.dataColumn === 'vin' }" >{{ row.vin }}</td>
+								<td v-bind:class="{ danger: row.error !== null && row.error.dataColumn === 'state' }" > {{ row.state }}</td>
+								<td v-bind:class="{ 'text-danger': row.error }" >{{ row.error ? row.error.str : '' }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div id="submitRow" class="row">
+				<div class="col-lg-8">
+					<button v-show="showSubmitBtn" id="submitBtn" @click="submit()" type="button" class="btn btn-default">确认提交</button>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="alert alert-success col-lg-8" v-show="submitSuccess">
+					<strong>导入成功!</strong>
+				</div>
+			</div>
+
+		</div>
+
+	</body>
+</html>
+

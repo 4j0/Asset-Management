@@ -16,7 +16,7 @@ $(function() {
 
 		data: {
 			LANG_MAP : { 
-				role : "角色", user : "用户", asset: "资产", manage : "管理", query : "查询", all: "全部",
+				role : "角色管理", user : "用户管理", asset: "固定资产管理", manage : "管理", query : "查询", all: "全部", vdcs_eu_dlr: "vdcs_eu_dlr",
 			},
 			roles : [],
 			roleInput : "",

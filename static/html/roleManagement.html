@@ -56,7 +56,8 @@
 				</div>
 				<div id="pList" class="col-lg-6" v-if="selectedRole">
 					<div  class="panel panel-default" v-for="(value, key) in selectedRole.permission">
-						<div class="panel-heading"> {{ LANG_MAP[key]}}管理模块 </div>
+						<!--<div class="panel-heading"> {{ LANG_MAP[key]}}管理模块 </div>-->
+						<div class="panel-heading"> {{ LANG_MAP[key]}}模块 </div>
 							<table class="table">
 								<tr>
 									<td v-for="(v, k) in value">{{ LANG_MAP[k] }}<input type="checkbox" v-on:click="showSaveBtn=true" v-model="selectedRole.permission[key][k]"></td>

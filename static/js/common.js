@@ -94,7 +94,7 @@ function isEmpty(obj)
 		return false;
 	}
 	return true;
-};
+}
 
 function turnOnLoadingOverlay() {
 	$(document).ajaxStart(function(){
@@ -134,6 +134,15 @@ function remove(array, element) {
 		array.splice(index, 1);
 	}
 }
+
+function isASCII(str) {
+    return /^[\x00-\x7F]*$/.test(str);
+}
+
+function isAlphanumeric(str) {
+	return /^[0-9a-zA-Z]+$/.test(str);
+}
+
 //Non-Mutating Element Removal
 //function remove(array, element) {
     //return array.filter(e => e !== element);

@@ -24,3 +24,11 @@ function login() {
 			});
 	}
 }
+
+$(document).ready(function(){
+	$("#passwd").keypress(function(event){  
+		if(event.which == 13)      
+			login();
+	}); 
+});
+

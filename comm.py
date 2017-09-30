@@ -1,22 +1,31 @@
 # -*- coding: utf-8 -*-
 import json
+import pymssql
 import datetime
 from functools import wraps
-from flask import make_response, jsonify, abort, request
-import pdb
+from flask import g, make_response, jsonify, abort, request
+from db_conf import VDCS_TEST_DB_CONFIG
 
 tokens = {}
 permission_cache = {}
-#PERMISSIONS = { 'user': { 'manage' : 1, },
-                #'role': { 'manage' : 2, },
-                #'asset': { 'manage' : 4,
-                            #'query' : 8, },
-                #}
 PERMISSIONS = { 'user': { 'all' : 1, },
                 'role': { 'all' : 2, },
                 'asset': { 'all' : 4,
                             'query' : 8, },
+                'vdcs_eu_dlr': { 'all' : 16, },
                 }
+
+def get_vdcs_db_con():
+    if not hasattr(g, 'vdcs_db_con'):
+        g.vdcs_db_con = pymssql.connect(VDCS_TEST_DB_CONFIG['server'], \
+                VDCS_TEST_DB_CONFIG['username'], \
+                VDCS_TEST_DB_CONFIG['password'],\
+                VDCS_TEST_DB_CONFIG['db'])
+    return g.vdcs_db_con
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def json_abort(obj, err_code):
     abort(make_response(jsonify(obj), err_code))
@@ -78,18 +87,3 @@ def jsonEncoder(obj):
     if hasattr(obj, '__table__'):
         return {c.name: getattr(obj, c.name) for c in obj.__table__.columns}
     return json.JSONEncoder.default(self, obj)
-
-#class RequestError(Exception):
-    #status_code = 400
-
-    #def __init__(self, err_msg, status_code=None, payload=None):
-        #Exception.__init__(self)
-        #self.err_msg = err_msg
-        #if status_code is not None:
-            #self.status_code = status_code
-        #self.payload = payload
-
-    #def to_dict(self):
-        #rv = dict(self.payload or ())
-        #rv['err_msg'] = self.err_msg
-        #return rv
