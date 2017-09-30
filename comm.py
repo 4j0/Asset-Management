@@ -4,7 +4,7 @@ import pymssql
 import datetime
 from functools import wraps
 from flask import g, make_response, jsonify, abort, request
-from db_conf import VDCS_TEST_DB_CONFIG
+from db_conf import VDCS_DB_CONFIG
 
 tokens = {}
 permission_cache = {}

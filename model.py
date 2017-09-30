@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from flask_sqlalchemy import SQLAlchemy
-from db_conf import DB_CONFIG
 
 db = SQLAlchemy()
 
