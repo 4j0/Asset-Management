@@ -17,10 +17,10 @@ PERMISSIONS = { 'user': { 'all' : 1, },
 
 def get_vdcs_db_con():
     if not hasattr(g, 'vdcs_db_con'):
-        g.vdcs_db_con = pymssql.connect(VDCS_TEST_DB_CONFIG['server'], \
-                VDCS_TEST_DB_CONFIG['username'], \
-                VDCS_TEST_DB_CONFIG['password'],\
-                VDCS_TEST_DB_CONFIG['db'])
+        g.vdcs_db_con = pymssql.connect(VDCS_DB_CONFIG['server'], \
+                VDCS_DB_CONFIG['username'], \
+                VDCS_DB_CONFIG['password'],\
+                VDCS_DB_CONFIG['db'])
     return g.vdcs_db_con
 
 def allowed_file(filename):
