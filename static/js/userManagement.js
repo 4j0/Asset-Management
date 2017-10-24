@@ -15,9 +15,7 @@ $(function() {
 		el: '#app',
 
 		data: {
-			LANG_MAP : { 
-				role : "角色", user : "用户", asset: "资产", manage : "管理", query : "查询", all : '全部',
-			},
+			LANG_MAP : LANG_MAP,
 			users : [],
 			roleQueryResult : [],
 			userQueryInput: "",

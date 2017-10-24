@@ -24,6 +24,9 @@ var HOST = window.location.host;
 var PROTOCOL = "http://";
 var APP = "";
 var URL_PRE = PROTOCOL + HOST + APP;
+LANG_MAP = { 
+	role : "角色", user : "用户", asset: "固定资产", manage : "管理", query : "查询", all: "全部", vdcs_eu_dlr: "vdcs_eu_dlr",
+},
 
 jQuery.each( [ "json_put", "json_delete", "json_post", "_get" ], function( i, method ) {
 	jQuery[ method ] = function( url, data, callback, type ) {
