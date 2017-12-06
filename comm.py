@@ -13,6 +13,7 @@ PERMISSIONS = { 'user': { 'all' : 1, },
                 'asset': { 'all' : 4,
                             'query' : 8, },
                 'vdcs_eu_dlr': { 'all' : 16, },
+                'jlr_msg_query': { 'all' : 32, },
                 }
 
 def get_vdcs_db_con():

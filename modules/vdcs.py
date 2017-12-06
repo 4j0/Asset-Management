@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import json
 from flask import Blueprint, request, jsonify
-from comm import get_vdcs_db_con, login_required, permission, PERMISSIONS
+from comm import get_vdcs_db_con, login_required, permission, PERMISSIONS, json_abort
+#import pdb
 
 VDCS = Blueprint("VDCS", __name__)
 
@@ -37,4 +38,22 @@ def put_cars():
     db.commit()
     return "", 201
 
-
+@VDCS.route('/vdcs/jlr/msg', methods=['GET'])
+@login_required
+@permission(PERMISSIONS['jlr_msg_query']['all'])
+def get_msgs():
+    vin = request.args.get('vin')
+    if  vin == None:
+        json_abort({'err_msg': 'Required parameter vin is missing!'}, 400)
+    if len(vin) != 17:
+        json_abort({'err_msg': 'vin length != 17'}, 400)
+    db = get_vdcs_db_con()
+    sql_jlr_send = 'SELECT * from dbo.JLR_Send WHERE VinCode = %s ORDER BY CreatedTime'
+    sql_jlr_receive  = 'SELECT * from dbo.JLR_Receive WHERE VinCode = %s ORDER BY CreatedTime'
+    jlr_msg = {}
+    with db.cursor(as_dict=True) as cursor:
+        cursor.execute(sql_jlr_send, vin)
+        jlr_msg['send'] = cursor.fetchall()
+        cursor.execute(sql_jlr_receive, vin)
+        jlr_msg['receive'] = cursor.fetchall()
+    return jsonify(jlr_msg)
