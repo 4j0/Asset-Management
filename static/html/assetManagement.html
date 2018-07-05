@@ -157,9 +157,13 @@
 									<label for="editBox_location" class="col-sm-3 control-label text-muted">location</label>
 									<div class="col-sm-5">
 										<select id="editBox_location" class="form-control input-sm ignore" v-model="editBox.location">
-											<option>海徐路</option>
+											<option>三甲港</option>
 											<option>来福士</option>
 											<option>申东路</option>
+											<option>华东地址</option>
+											<option>华南基地</option>
+											<option>华中地址</option>
+											<option>华北基地</option>
 										</select>
 									</div>
 								</div>
@@ -169,8 +173,12 @@
 										<select id="editBox_type" class="form-control input-sm ignore" v-model="editBox.type">
 											<option>笔记本</option>
 											<option>台式机</option>
+											<option>显示器</option>
+											<option>打印机</option>
 											<option>手机</option>
 											<option>平板</option>
+											<option>PDA</option>
+											<option>其他</option>
 										</select>
 									</div>
 								</div>
@@ -242,25 +250,27 @@
 			</div><!-- /.modal -->
 
 			<datalist id="datalist_model">
+				<option value="DELL Optiplex">
+				<option value="DELL Optiplex 380">
 				<option value="DELL Optiplex 390">
 				<option value="DELL Latitude">
 				<option value="DELL Latitude 3450">
 				<option value="DELL Latitude 3460">
+				<option value="DELL Latitude 3480">
+				<option value="DELL Latitude 7390">
+				<option value="DELL XPS 13">
 				<option value="Microsoft Surface Pro 4">
+				<option value="Microsoft Surface Laptop">
 				<option value="Mac Book Pro">
 			</datalist>
 			<datalist id="datalist_os">
-				<option value="Win XP">
 				<option value="Win7 32">
 				<option value="Win7 64">
 				<option value="Win8 32">
 				<option value="Win8 64">
 				<option value="Win10 32">
 				<option value="Win10 64">
-				<option value="macOS 10.9">
-				<option value="macOS 10.10">
-				<option value="macOS 10.11">
-				<option value="macOS 10.12">
+				<option value="OS X">
 			</datalist>
 
 		</div>
